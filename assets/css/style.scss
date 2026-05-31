@@ -1,0 +1,54 @@
+@import "{{ site.theme }}";
+
+.page-header {
+  background-color: #121212;
+  background-image: linear-gradient(120deg, #121212, #1DB954);
+}
+
+.project-name {
+  color: #ffffff;
+}
+
+.project-tagline {
+  color: #e5e5e5;
+  opacity: 0.95;
+}
+
+.main-content {
+  color: #121212;
+}
+
+.main-content h1,
+.main-content h2,
+.main-content h3,
+.main-content h4 {
+  color: #1DB954;
+}
+
+.main-content a {
+  color: #1DB954;
+}
+
+.main-content a:hover {
+  color: #14833b;
+}
+
+.btn {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.btn:hover {
+  color: #121212;
+  background-color: #1DB954;
+  border-color: #1DB954;
+}
+
+.site-footer {
+  color: #666666;
+}
+
+.site-footer-owner a,
+.site-footer-credits a {
+  color: #1DB954;
+}
