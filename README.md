@@ -207,3 +207,58 @@ For our univariate analysis, we first looked at the distribution of `track_popul
 <iframe src="assets/css/track-popularity-distribution.html" width="100%" height="500" frameborder="0"></iframe>
 
 <iframe src="assets/css/log-followers-distribution.html" width="100%" height="500" frameborder="0"></iframe>
+
+## Bivariate Analysis
+
+For our bivariate analysis, we looked at the relationship between artist fame and track popularity. We first looked at the correlation between different predictor variables with track popularity.
+
+<iframe src="assets/css/correlation_plot.html" width="100%" height="500" frameborder="0"></iframe>
+
+We also used scatter plots to help compare `log_followers` and `artist_popularity` against `track_popularity`. These plots help us see whether songs by more famous artists tend to have higher popularity scores.
+
+<iframe src="assets/css/followers-vs-track-popularity.html" width="100%" height="500" frameborder="0"></iframe>
+
+<iframe src="assets/css/artist-popularity-vs-track-popularity.html" width="100%" height="500" frameborder="0"></iframe>
+
+## Interesting Aggregates
+
+For our interesting aggregates, we grouped songs by `fame_group` and compared the average track popularity of high-fame and low-fame artists. If high-fame artists have higher average track popularity, then this suggests that artist fame may be related to song popularity.
+
+We also grouped songs by genre to see whether certain genres tend to have higher average popularity. This is useful because genre may also affect track popularity and could be useful in our prediction model.
+
+<iframe src="assets/css/fame_table.html" width="100%" height="500" frameborder="0"></iframe>
+
+<iframe src="assets/css/genre_table.html" width="100%" height="500" frameborder="0"></iframe>
+
+# Assessment of Missingness
+
+## NMAR Analysis
+
+We consider `artist_followers` to be potentially **NMAR** in the dataset. We are missing the followers' count of some artists, and we suppose that this may happen because because those artists may be less known or harder to match between datasets. In other words, the value of `artist_followers` is missing because it is very small — the lesser known the artist, the higher the chance of missing data.
+
+However, the case might turn into MAR if there was additional information on how the dataset was created. If we knew how the name of the artist was misspelled or how his or her name did not match, then it could explain the absence of followers in the dataset.
+
+## Missingness Dependency
+
+For the missingness dependency test, we analyze whether missingness in `artist_followers` depends on other columns.
+For each test:
+
+**Null Hypothesis:** The missingness of `artist_followers` does not depend on the comparison column.
+
+**Alternative Hypothesis:** The missingness of `artist_followers` does depend on the comparison column.
+
+**Test Statistic:** Absolute difference in mean comparison-column value between rows where `artist_followers` is missing and rows where `artist_followers` is not missing.
+
+**Significance Level:** 0.05
+
+<iframe src="assets/css/missigness_results.html" width="100%" height="500" frameborder="0"></iframe>
+
+The missingness permutation tests suggest that missingness in `artist_followers` depends on `track_popularity`, but does not appear to depend on `danceability`.
+
+For `track_popularity`, the observed statistic was about 2.71 and the p-value was < 0.001. Since this p-value is below our significance level of 0.05, we reject the null hypothesis. This means there is evidence that missingness in `artist_followers` depends on `track_popularity`.
+
+For `danceability`, the observed statistic was about 0.0035 and the p-value was 0.19. Since this p-value is above 0.05, we fail to reject the null hypothesis. This means we do not have evidence that missingness in `artist_followers` depends on `danceability`.
+
+This makes sense because artist follower information came from merging the track dataset with the artist dataset. Missing artist follower values may be connected to artist fame or track popularity, but there is less reason to believe missing artist follower values would depend on an audio feature like danceability.
+
+
