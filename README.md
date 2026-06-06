@@ -251,7 +251,7 @@ For each test:
 
 **Significance Level:** 0.05
 
-<iframe src="assets/css/missigness_results.html" width="100%" height="500" frameborder="0"></iframe>
+<iframe src="assets/css/missingness_results.html" width="100%" height="500" frameborder="0"></iframe>
 
 The missingness permutation tests suggest that missingness in `artist_followers` depends on `track_popularity`, but does not appear to depend on `danceability`.
 
@@ -261,4 +261,65 @@ For `danceability`, the observed statistic was about 0.0035 and the p-value was 
 
 This makes sense because artist follower information came from merging the track dataset with the artist dataset. Missing artist follower values may be connected to artist fame or track popularity, but there is less reason to believe missing artist follower values would depend on an audio feature like danceability.
 
+<iframe src="assets/css/missingness-track-popularity.html" width="100%" height="500" frameborder="0"></iframe>
 
+# Hypothesis Testing
+
+For our hypothesis test, we wanted to determine whether songs by high-fame artists have higher track popularity than songs by low-fame artists.
+
+We separated artists into two groups using the median value of `log_followers``. Artists above the median were labeled as high-fame artists, while artists at or below the median were labeled as low-fame artists.
+
+Null Hypothesis: There is no difference in average track popularity between songs by high-fame artists and songs by low-fame artists.
+
+Alternative Hypothesis: Songs by more famous artists have a higher average track popularity than songs by low-fame artists.
+
+Test Statistic: Difference in mean track popularity between high-fame artists and low-fame artists.
+
+Significance level: 0.05
+
+<iframe src="assets/css/hypothesis-test.html" width="100%" height="500" frameborder="0"></iframe>
+
+The observed difference in mean track popularity was about 7.78 points, meaning high-fame artists had tracks that were about 7.78 popularity points higher on average than low-fame artists. In the permutation test, the shuffled differences were centered near 0, while the observed difference was far to the right of the null distribution. The p-value was < 0.001, so we reject the null hypothesis, suggesting that tracks by high-fame artists tend to have higher popularity than tracks by low-fame artists.
+
+# Prediction Problem
+
+Our prediction problem is:
+
+**Can we predict a song's Spotify track popularity using artist fame and audio features?**
+
+which makes it a regression problem.
+
+The response variable is `track_popularity.`
+
+If artist fame helps predict track popularity better than audio features alone, then fame is an important part of the story.
+
+We used **RMSE** as the main evaluation metric, as it measures how far the predicted popularity scores are from the real popularity scores. The lower the RMSE, the better.
+
+At the time of prediction, we would know features like artist followers, artist popularity, audio features, duration, and whether the song is explicit. We should not use any feature that directly leaks the track popularity value.
+
+# Baseline Model
+
+For the baseline model, we used a linear regression model. It uses four features: three quantitative features and one nominal feature.
+
+- `log_followers` — quantitative (a log transform of the original `artist_followers` column, used because raw follower counts are heavily right-skewed)
+- `danceability` — quantitative
+- `energy` — quantitative
+- `explicit` — nominal
+
+The three quantitative columns were standardized with `StandardScaler`, and the nominal `explicit` column was one-hot encoded. All transformations and model training were implemented in a single sklearn Pipeline.
+
+# Final Model
+
+For the final model, we used a decision tree regressor because the relationship between artist fame, audio features, and track popularity may not be perfectly linear, and a decision tree can capture non-linear patterns better than a simple linear regression model.
+
+We tuned two hyperparameters using GridSearchCV:
+
+* `max_depth`: how deep the decision tree is allowed to grow
+* `min_samples_leaf`: the minimum number of samples required in each leaf
+
+The final model also adds engineered features:
+
+* `energy_danceability`: combines energy and danceability, since songs that are both energetic and danceable may behave differently from songs that are only high in one of those features.
+* `high_energy`: marks whether a song has above-median energy, which helps the model separate higher-energy songs from lower-energy songs.
+
+The final model also uses existing features such as `log_followers`, `artist_popularity`, audio features, `duration_minutes`, `explicit`, and `track_genre`. All feature engineering, preprocessing, hyperparameter tuning, and model training are done through sklearn tools.
