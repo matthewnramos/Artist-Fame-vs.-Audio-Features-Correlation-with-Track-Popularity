@@ -337,7 +337,7 @@ For the baseline model, we used a linear regression model. It uses four features
 
 The three quantitative columns were standardized with `StandardScaler`, and the nominal `explicit` column was one-hot encoded. All transformations and model training were implemented in a single sklearn Pipeline.
 
-The baseline model had an RMSE of about 21.21 and an R² value of about 0.037. This means the model’s predictions were typically off by around 21 popularity points, and the model only explained about 3.7% of the variation in track popularity. Because of this, I would not consider the baseline model very strong. However, it is still useful as a starting point when being used to compare to the final model.
+The baseline model had an RMSE of about 21.21 and an R² value of about 0.037. This means the model’s predictions were typically off by around 21 popularity points, and the model only explained about 3.7% of the variation in track popularity. Because of this, we wouldn't consider the baseline model very strong. However, it is still useful as a starting point.
 
 # Final Model
 
