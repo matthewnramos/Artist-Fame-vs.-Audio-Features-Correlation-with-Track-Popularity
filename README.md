@@ -308,9 +308,11 @@ For the baseline model, we used a linear regression model. It uses four features
 
 The three quantitative columns were standardized with `StandardScaler`, and the nominal `explicit` column was one-hot encoded. All transformations and model training were implemented in a single sklearn Pipeline.
 
+The baseline model had an RMSE of about 21.21 and an R² value of about 0.037. This means the model’s predictions were typically off by around 21 popularity points, and the model only explained about 3.7% of the variation in track popularity. Because of this, I would not consider the baseline model very strong. However, it is still useful as a starting point when being used to compare to the final model.
+
 # Final Model
 
-For the final model, we used a decision tree regressor because the relationship between artist fame, audio features, and track popularity may not be perfectly linear, and a decision tree can capture non-linear patterns better than a simple linear regression model.
+For the final model, we used a DecisionTreeRegressor because the relationship between artist fame, audio features, and track popularity may not be perfectly linear, and a decision tree can capture non-linear patterns better than a simple linear regression model.
 
 We tuned two hyperparameters using GridSearchCV:
 
@@ -323,3 +325,34 @@ The final model also adds engineered features:
 * `high_energy`: marks whether a song has above-median energy, which helps the model separate higher-energy songs from lower-energy songs.
 
 The final model also uses existing features such as `log_followers`, `artist_popularity`, audio features, `duration_minutes`, `explicit`, and `track_genre`. All feature engineering, preprocessing, hyperparameter tuning, and model training are done through sklearn tools.
+
+The final Decision Tree model performed better than the baseline linear regression model. The baseline model had an RMSE of about 21.21 and an R² of about 0.037, while the final model had an RMSE of about 18.74 and an R² of about 0.248.
+
+The final model reduced the RMSE by about 2.47 popularity points compared to the baseline model. The R² value also increased, meaning the final model explained more of the variation in track popularity.
+
+This improvement likely happened because the final model used more useful features, included engineered features like `energy_danceability` and `high_energy`, and used a Decision Tree model that can capture non-linear relationships better than a simple Linear Regression model.
+
+# Fairness Analysis
+
+For the fairness analysis, we check whether the final model performs worse for high-fame artists than for low-fame artists.
+
+**Group X:** High-fame artists  
+**Group Y:** Low-fame artists
+
+**Evaluation Metric:** RMSE
+
+**Null Hypothesis:** The model is fair. Its RMSE for high-fame and low-fame artists is roughly the same, and any difference is due to random chance.
+
+**Alternative Hypothesis:** The model is unfair. Its RMSE for high-fame artists is higher than its RMSE for low-fame artists.
+
+**Test Statistic:** RMSE for high-fame artists minus RMSE for low-fame artists.
+
+**Significance Level:** 0.05
+
+<iframe src="assets/css/fairness-test.html" width="100%" height="500" frameborder="0"></iframe>
+
+The RMSE for low-fame artists was about 15.34, while the RMSE for high-fame artists was about 21.60. Since our test statistic was RMSE for high-fame artists minus RMSE for low-fame artists, the observed statistic was about 6.26.
+
+The p-value was < 0.001 in our simulation, meaning none of the shuffled trials produced an RMSE difference as large as the observed one. That means we reject the null hypothesis.
+
+This suggests that the final model performs worse for high-fame artists than for low-fame artists. However, this does not prove that fame causes the model to perform worse; it only shows that there is a noticeable difference in model error between the two groups in our test set.
