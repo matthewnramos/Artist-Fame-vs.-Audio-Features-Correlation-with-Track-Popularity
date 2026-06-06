@@ -199,3 +199,11 @@ We also renamed columns so that track popularity and artist popularity are clear
 </table>
 
 </div>
+
+## Univariate Analysis
+
+For our univariate analysis, we first looked at the distribution of `track_popularity`, which is the variable we are trying to understand and eventually predict. We also looked at the distribution of `log_followers` because artist followers is an important part of how we measure artist fame. Using the log of followers makes the distribution easier to interpret because raw follower counts can be extremely large for famous artists.
+
+<iframe src="assets/css/track-popularity-distribution.html" width="100%" height="500" frameborder="0"></iframe>
+
+<iframe src="assets/css/log-followers-distribution.html" width="100%" height="500" frameborder="0"></iframe>
