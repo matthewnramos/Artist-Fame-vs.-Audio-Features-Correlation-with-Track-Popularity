@@ -1,6 +1,7 @@
 # Artist Fame vs. Audio Features: Correlation with Track Popularity
 
 DSC 80 Project @ UCSD
+
 By: Matthew Ramos & Mayur Nookala
 
 # Introduction
@@ -210,7 +211,7 @@ For our univariate analysis, we first looked at the distribution of `track_popul
 
 ## Bivariate Analysis
 
-For our bivariate analysis, we looked at the relationship between artist fame and track popularity. We first looked at the correlation between different predictor variables with track popularity.
+For our bivariate analysis, we looked at the relationship between artist fame and track popularity. We first looked at the correlation between different predictor variables with track popularity. It is found that `artist_popuarity` has the highest correlation to `track_popularity`, with a correlation value of 0.22.
 
 <iframe src="assets/css/correlation_plot.html" width="100%" height="500" frameborder="0"></iframe>
 
@@ -315,9 +316,7 @@ The observed difference in mean track popularity was about 7.78 points, meaning 
 
 Our prediction problem is:
 
-**Can we predict a song's Spotify track popularity using artist fame and audio features?**
-
-which makes it a regression problem.
+**"Can we predict a song's Spotify track popularity using artist fame and audio features?"** which makes it a regression problem.
 
 The response variable is `track_popularity.`
 
