@@ -226,9 +226,31 @@ For our interesting aggregates, we grouped songs by `fame_group` and compared th
 
 We also grouped songs by genre to see whether certain genres tend to have higher average popularity. This is useful because genre may also affect track popularity and could be useful in our prediction model.
 
-<iframe src="assets/css/fame_table.html" width="100%" height="500" frameborder="0"></iframe>
+### Average Popularity by Fame Group
 
-<iframe src="assets/css/genre_table.html" width="100%" height="500" frameborder="0"></iframe>
+| Fame Group | Avg. Track Popularity | Avg. Artist Popularity | Avg. Log Followers | Number of Tracks |
+|---|---:|---:|---:|---:|
+| High Fame | 39.35 | 68.10 | 13.79 | 46,305 |
+| Low Fame | 31.57 | 37.52 | 8.74 | 46,314 |
+
+This table shows that songs by high-fame artists had higher average track popularity than songs by low-fame artists. High-fame artists also had much higher artist popularity and follower counts, which supports the idea that artist fame may be related to track popularity.
+
+### Top Genres by Average Track Popularity
+
+| Genre | Avg. Track Popularity | Avg. Artist Popularity | Number of Tracks |
+|---|---:|---:|---:|
+| k-pop | 59.49 | 68.91 | 849 |
+| pop-film | 59.12 | 62.59 | 893 |
+| chill | 55.20 | 51.91 | 684 |
+| pop | 54.38 | 71.41 | 760 |
+| sad | 52.38 | 52.11 | 794 |
+| indian | 50.51 | 57.15 | 728 |
+| grunge | 50.14 | 65.54 | 974 |
+| anime | 49.60 | 53.15 | 1,057 |
+| emo | 48.64 | 62.27 | 858 |
+| sertanejo | 47.77 | 63.05 | 857 |
+
+This table shows the genres with the highest average track popularity in the cleaned dataset. Genres like k-pop, pop-film, chill, and pop had the highest average popularity scores, which suggests that genre may also be related to how popular a track becomes.
 
 # Assessment of Missingness
 
