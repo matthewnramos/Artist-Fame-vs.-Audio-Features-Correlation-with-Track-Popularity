@@ -273,15 +273,23 @@ For each test:
 
 **Significance Level:** 0.05
 
-<iframe src="assets/css/missingness_results.html" width="100%" height="500" frameborder="0"></iframe>
+### Missingness Dependency Results
+
+| Missing Column | Comparison Column | Observed Statistic | p-value |
+|---|---|---:|---:|
+| artist_followers | track_popularity | 2.710526 | < 0.001 |
+| artist_followers | energy | 0.112925 | < 0.001 |
+| artist_followers | valence | 0.064566 | < 0.001 |
+| artist_followers | acousticness | 0.114472 | < 0.001 |
+| artist_followers | tempo | 6.297681 | < 0.001 |
+| artist_followers | duration_ms | 29601.760962 | < 0.001 |
+| artist_followers | danceability | 0.003517 | 0.204 |
 
 The missingness permutation tests suggest that missingness in `artist_followers` depends on `track_popularity`, but does not appear to depend on `danceability`.
 
-For `track_popularity`, the observed statistic was about 2.71 and the p-value was < 0.001. Since this p-value is below our significance level of 0.05, we reject the null hypothesis. This means there is evidence that missingness in `artist_followers` depends on `track_popularity`.
+For `track_popularity`, the observed statistic was about 2.71 and the simulated p-value was less than 0.001. Since this p-value is below our significance level of 0.05, we reject the null hypothesis. This means there is evidence that missingness in `artist_followers` depends on `track_popularity`.
 
-For `danceability`, the observed statistic was about 0.0035 and the p-value was 0.19. Since this p-value is above 0.05, we fail to reject the null hypothesis. This means we do not have evidence that missingness in `artist_followers` depends on `danceability`.
-
-This makes sense because artist follower information came from merging the track dataset with the artist dataset. Missing artist follower values may be connected to artist fame or track popularity, but there is less reason to believe missing artist follower values would depend on an audio feature like danceability.
+For `danceability`, the observed statistic was about 0.0035 and the p-value was 0.204. Since this p-value is above 0.05, we fail to reject the null hypothesis. This means we do not have evidence that missingness in `artist_followers` depends on `danceability`.
 
 <iframe src="assets/css/missingness-track-popularity.html" width="100%" height="500" frameborder="0"></iframe>
 
@@ -291,13 +299,13 @@ For our hypothesis test, we wanted to determine whether songs by high-fame artis
 
 We separated artists into two groups using the median value of `log_followers``. Artists above the median were labeled as high-fame artists, while artists at or below the median were labeled as low-fame artists.
 
-Null Hypothesis: There is no difference in average track popularity between songs by high-fame artists and songs by low-fame artists.
+**Null Hypothesis:** There is no difference in average track popularity between songs by high-fame artists and songs by low-fame artists.
 
-Alternative Hypothesis: Songs by more famous artists have a higher average track popularity than songs by low-fame artists.
+**Alternative Hypothesis:** Songs by more famous artists have a higher average track popularity than songs by low-fame artists.
 
-Test Statistic: Difference in mean track popularity between high-fame artists and low-fame artists.
+**Test Statistic:** Difference in mean track popularity between high-fame artists and low-fame artists.
 
-Significance level: 0.05
+**Significance level:** 0.05
 
 <iframe src="assets/css/hypothesis-test.html" width="100%" height="500" frameborder="0"></iframe>
 
