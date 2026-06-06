@@ -1,16 +1,15 @@
 # Artist Fame vs. Audio Features: Correlation with Track Popularity
 
 DSC 80 Project @ UCSD
-
 By: Matthew Ramos & Mayur Nookala
 
-## Introduction
+# Introduction
 
-### General Introduction
+## General Introduction
 
-Music popularity is influenced by many different factors. Some songs become popular because they are catchy, energetic, easy to dance to, or fit current music trends. However, popularity may also depend on the artist behind the song. A song by a famous artist may receive more attention simply because the artist already has a large audience.
+Music popularity is influenced by many different factors. Some songs become popular because they are catchy, trendy, and easy to dance to. However, popularity may also depend on the artist behind the song. A song by a famous artist may receive more attention simply because the artist already has a large audience.
 
-For this project, we are working with a Spotify music dataset that includes information about songs, artists, and audio features. The dataset contains information such as track popularity, danceability, energy, valence, acousticness, and whether or not a song is explicit. It also includes artist-level information such as artist followers and artist popularity. These columns allow us to compare two possible explanations for track popularity: the qualities of the song itself and the fame of the artist.
+For this project, we worked with a Spotify music dataset that includes information about songs, artists, and audio features. The dataset contains information such as track popularity, danceability, energy, valence, acousticness, and whether or not a song is explicit. It also includes artist-level information such as artist followers and artist popularity. These columns allow us to compare two possible explanations for track popularity: the qualities of the song itself and the fame of the artist.
 
 The main question we are interested in is:
 
@@ -18,9 +17,9 @@ The main question we are interested in is:
 
 This question is important because it helps us understand whether a song’s success is mostly connected to how the song sounds, or whether it is strongly influenced by the artist’s existing popularity. In other words, we want to see if audio features like danceability, energy, and valence are strong predictors of track popularity, or if artist fame gives songs a bigger advantage.
 
-To answer this question, we will use data cleaning, exploratory data analysis, hypothesis testing, and machine learning. First, we will explore patterns between artist fame and track popularity. Then, we will compare track popularity between high-fame and low-fame artists. Finally, we will build prediction models to see whether artist-related features or audio features are more useful for predicting track popularity.
+To answer this question, we used data cleaning, exploratory data analysis, hypothesis testing, and machine learning. First, we will explore patterns between artist fame and track popularity. Then, we will compare track popularity between high-fame and low-fame artists. Finally, we will build prediction models to see whether artist-related features or audio features are more useful for predicting track popularity.
 
-### Introduction of Columns
+## Introduction of Columns
 
 The dataset includes a variety of columns that describe songs, artists, and audio features. Some of the most important columns for this project are listed below.
 
@@ -46,4 +45,157 @@ The dataset includes a variety of columns that describe songs, artists, and audi
 
 **genre:** This column describes the genre or category of the song. Genre is useful because popularity patterns may be different across different types of music.
 
-Overall, these columns help us compare artist fame with audio features. By looking at both types of information, we can better understand which factors are most connected to track popularity.
+After cleaning and merging the datasets, our final dataset contains 92,619 rows and 20 columns. Overall, these columns help us compare artist fame with audio features. By looking at both types of information, we can better understand which factors are most connected to track popularity. 
+
+# Data Cleaning and Exploratory Data Analysis
+
+## Data Cleaning
+
+In this section, we cleaned the Spotify track and artist datasets so they can be used for our analysis. Since our project focuses on whether artist fame matters more than audio features when predicting track popularity, we keep columns related to track popularity, artist popularity, artist followers, genre, and audio features.
+
+We also renamed columns so that track popularity and artist popularity are clearly different. Then, we merged the track dataset with the artist dataset so that each row contains information about a song and the artist who made it. Finally, we removed rows with missing values in important columns and create new columns that will help with our analysis, such as `log_followers` and `fame_group`.
+
+### Head of Cleaned DataFrame
+
+<div style="overflow-x: auto; max-width: 100%;">
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>track_name</th>
+      <th>artist_name</th>
+      <th>track_popularity</th>
+      <th>duration_ms</th>
+      <th>explicit</th>
+      <th>danceability</th>
+      <th>energy</th>
+      <th>loudness</th>
+      <th>speechiness</th>
+      <th>acousticness</th>
+      <th>instrumentalness</th>
+      <th>liveness</th>
+      <th>valence</th>
+      <th>tempo</th>
+      <th>track_genre</th>
+      <th>artist_popularity</th>
+      <th>artist_followers</th>
+      <th>log_followers</th>
+      <th>duration_minutes</th>
+      <th>fame_group</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Comedy</td>
+      <td>Gen Hoshino</td>
+      <td>73</td>
+      <td>230666</td>
+      <td>False</td>
+      <td>0.676</td>
+      <td>0.4610</td>
+      <td>-6.746</td>
+      <td>0.1430</td>
+      <td>0.0322</td>
+      <td>0.000001</td>
+      <td>0.3580</td>
+      <td>0.715</td>
+      <td>87.917</td>
+      <td>acoustic</td>
+      <td>66.0</td>
+      <td>852637.0</td>
+      <td>13.656090</td>
+      <td>3.844433</td>
+      <td>High Fame</td>
+    </tr>
+    <tr>
+      <td>Ghost - Acoustic</td>
+      <td>Ben Woodward</td>
+      <td>55</td>
+      <td>149610</td>
+      <td>False</td>
+      <td>0.420</td>
+      <td>0.1660</td>
+      <td>-17.235</td>
+      <td>0.0763</td>
+      <td>0.9240</td>
+      <td>0.000006</td>
+      <td>0.1010</td>
+      <td>0.267</td>
+      <td>77.489</td>
+      <td>acoustic</td>
+      <td>53.0</td>
+      <td>11874.0</td>
+      <td>9.382191</td>
+      <td>2.493500</td>
+      <td>Low Fame</td>
+    </tr>
+    <tr>
+      <td>To Begin Again</td>
+      <td>Ingrid Michaelson</td>
+      <td>57</td>
+      <td>210826</td>
+      <td>False</td>
+      <td>0.438</td>
+      <td>0.3590</td>
+      <td>-9.734</td>
+      <td>0.0557</td>
+      <td>0.2100</td>
+      <td>0.000000</td>
+      <td>0.1170</td>
+      <td>0.120</td>
+      <td>76.332</td>
+      <td>acoustic</td>
+      <td>68.0</td>
+      <td>722496.0</td>
+      <td>13.490469</td>
+      <td>3.513767</td>
+      <td>High Fame</td>
+    </tr>
+    <tr>
+      <td>Can't Help Falling In Love</td>
+      <td>Kina Grannis</td>
+      <td>71</td>
+      <td>201933</td>
+      <td>False</td>
+      <td>0.266</td>
+      <td>0.0596</td>
+      <td>-18.515</td>
+      <td>0.0363</td>
+      <td>0.9050</td>
+      <td>0.000071</td>
+      <td>0.1320</td>
+      <td>0.143</td>
+      <td>181.740</td>
+      <td>acoustic</td>
+      <td>71.0</td>
+      <td>438860.0</td>
+      <td>12.991938</td>
+      <td>3.365550</td>
+      <td>High Fame</td>
+    </tr>
+    <tr>
+      <td>I'm Yours</td>
+      <td>Jason Mraz</td>
+      <td>80</td>
+      <td>242946</td>
+      <td>False</td>
+      <td>0.703</td>
+      <td>0.4440</td>
+      <td>-9.331</td>
+      <td>0.0417</td>
+      <td>0.5590</td>
+      <td>0.000000</td>
+      <td>0.0973</td>
+      <td>0.712</td>
+      <td>150.960</td>
+      <td>acoustic</td>
+      <td>79.0</td>
+      <td>5961911.0</td>
+      <td>15.600902</td>
+      <td>4.049100</td>
+      <td>High Fame</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
